@@ -65,6 +65,12 @@
                     </tbody>
                 </table>
 
+               {% if not authors|length %}
+                    <div class="text-center">
+                        No hay elementos actualmente.
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>

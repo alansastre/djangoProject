@@ -17,9 +17,11 @@ Asociaciones:
 
 ## CHANGELOG
 
-[] Precargar autor en selector filtro
+[OK] Precargar autor en selector filtro
 
-[] Mostrar mensaje de no se han encontrado elementos cuando la lista está vacía
+[ OK ] Mostrar mensaje de no se han encontrado elementos cuando la lista está vacía
+
+[] Mostrar número de elementos por cada listado
 
 [] Añadir filtro de géneros
 

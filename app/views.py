@@ -87,7 +87,8 @@ def book_author_filter(request):
     if author_id:
         data = {
             "books": Book.objects.filter(author_id=author_id),
-            "authors": Author.objects.all()
+            "authors": Author.objects.all(),
+            "author_id": author_id
         }
         return render(request, "books/book-list.html", context=data)
     return HttpResponseRedirect("/books")

@@ -14,8 +14,8 @@
             <div class="col">
 
                 <h1 class="mt-1 title">Listado de libros
-                 <a class="btn btn-primary" href="{% url 'book_new' %}">Crear nuevo libro</a>
-                 <a class="btn btn-danger" href="{% url 'book_new' %}">Borrar todos</a>
+                    <a class="btn btn-primary" href="{% url 'book_new' %}">Crear nuevo libro</a>
+                    <a class="btn btn-danger" href="{% url 'book_new' %}">Borrar todos</a>
                 </h1>
 
                 <div>
@@ -23,11 +23,12 @@
                         <div class="mb-3">
                             <label for="author_id">
                                 Filtrar por autor:
-                                <select class="form-select" id="author_id" name="author_id" >
+                                <select class="form-select" id="author_id" name="author_id">
                                     <option value="">----------</option>
 
                                     {% for author in authors %}
-                                        <option value="{{ author.id }}">
+                                        <option value="{{ author.id }}" {% if author_id == author.id %}
+                                                selected {% endif %}>
                                             {{ author.first_name }} {{ author.last_name }}
                                         </option>
                                     {% endfor %}
@@ -83,8 +84,17 @@
 
                     {% endfor %}
 
+
                     </tbody>
+
                 </table>
+
+                {% if not books|length %}
+                    <div class="text-center">
+                        No hay elementos actualmente.
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>
