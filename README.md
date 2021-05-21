@@ -21,7 +21,7 @@ Asociaciones:
 
 [ OK ] Mostrar mensaje de no se han encontrado elementos cuando la lista está vacía
 
-[] Mostrar número de elementos por cada listado
+[OK] Mostrar número de elementos por cada listado
 
 [] Añadir filtro de géneros
 
