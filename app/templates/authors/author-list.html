@@ -66,8 +66,12 @@
                 </table>
 
                {% if not authors|length %}
-                    <div class="text-center">
+                    <div class="text-center text-danger">
                         No hay elementos actualmente.
+                    </div>
+                {% else %}
+                    <div class="text-center text-success">
+                        Hay un total de <strong>{{ authors|length }}</strong> elementos.
                     </div>
                 {% endif %}
 
