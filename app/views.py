@@ -26,8 +26,7 @@ def book_list(request):
     data = {
         "books": Book.objects.all(),  # recupera libros de db,
         "authors": Author.objects.all(),
-        "notification": "Listado de libros",
-        "admin": False
+        "genres": Genre.objects.all()
     }
     return render(request, "books/book-list.html", context=data)
 
@@ -83,10 +82,11 @@ def book_save(request):
 
 def book_author_filter(request):
     author_id_str = request.GET.get("author_id")
+    genres = request.GET.getlist("genres")
     author_id = int(author_id_str) if author_id_str else None
     if author_id:
         data = {
-            "books": Book.objects.filter(author_id=author_id),
+            "books": Book.objects.filter(author_id=author_id, genres__id__in=genres),
             "authors": Author.objects.all(),
             "author_id": author_id
         }

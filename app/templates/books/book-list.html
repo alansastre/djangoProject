@@ -35,10 +35,25 @@
 
                                 </select>
                             </label>
-                            <button class="btn btn-info" type="submit">Aplicar filtro</button>
-                            <a class="btn btn-warning" href="{% url 'book_list' %}">Limpiar filtros</a>
+                         <label for="genres">
+                                Genres
+                                <select class="form-select ms-3" id="genres" name="genres" multiple>
+
+                                    {% for genre in genres %}
+                                        <option value="{{ genre.id }}">
+                                            {{ genre.name }} {{ genre.color }}
+                                        </option>
+                                    {% endfor %}
+
+                                </select>
+                            </label>
+                            <button class="btn btn-info ms-3" type="submit">Aplicar filtro</button>
+                            <a class="btn btn-warning ms-3" href="{% url 'book_list' %}">Limpiar filtros</a>
 
                         </div>
+
+
+
                     </form>
                 </div>
 
