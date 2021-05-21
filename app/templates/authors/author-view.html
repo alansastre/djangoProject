@@ -1,0 +1,107 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}
+    <title>Author {{ author.id }}</title>
+{% endblock %}
+
+{% block main %}
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col-8">
+
+                <h1> Datos del autor </h1>
+
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">
+                        <strong>ID:</strong> {{ author.id }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>First name:</strong> {{ author.first_name }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Last name:</strong> {{ author.last_name }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Email:</strong>
+                        <a href="mailto:{{ author.email }}">{{ author.email }}</a>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Number of books:</strong> {{ author.num_books }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Creation date:</strong> {{ author.creation_date|date:"SHORT_DATE_FORMAT" }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Married:</strong>
+                        {% if author.married %}
+                            <span class="badge bg-success">Sí</span>
+                        {% else %}
+                            <span class="badge bg-danger">No</span>
+                        {% endif %}
+                    </li>
+
+                    <li class="list-group-item">
+                        <strong>Salary:</strong> {{ author.salary }} &euro;
+                    </li>
+
+                </ul>
+
+                {% if author.biography_id and author.biography.year or author.biography.description%}
+
+                    <h3>Biografía del autor</h3>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">
+                            <strong>Año de nacimiento:</strong> {{ author.biography.year }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Descripción:</strong> {{ author.biography.description }}
+                        </li>
+                    </ul>
+                {% endif %}
+
+                {% if author.direction_id %}
+
+                    <h3>Dirección del autor</h3>
+                    <ul class="list-group list-group-flush mb-3">
+                        <li class="list-group-item">
+                            <strong>Street:</strong> {{ author.direction.street }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Province:</strong> {{ author.direction.province }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Postal Code:</strong> {{ author.direction.postal_code }}
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Country:</strong> {{ author.direction.country }}
+                        </li>
+                    </ul>
+                    <a class="btn btn-danger" href="{% url 'direction_delete' author.direction_id %}">Borrar dirección</a>
+                {% endif %}
+
+                {% if books|length %}
+                    <h3 class="mt-3">Libros del autor</h3>
+                    <ul class="list-group list-group-flush mb-3">
+                        {% for book in books %}
+                            <li class="list-group-item">
+                                <a href="{% url 'book_view' book.id %}"> {{ book.title }} </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                <hr>
+                <a class="btn btn-success" href="{% url 'author_load' author.pk %}">Editar</a>
+                <a class="btn btn-danger" href="{% url 'author_delete' author.pk %}">Borrar</a>
+                <a class="btn btn-info" href="{% url 'author_list' %}">Volver al listado</a>
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

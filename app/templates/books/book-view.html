@@ -1,0 +1,84 @@
+{% extends "layout/layout.html" %}
+{% load static %}
+
+
+{% block title %}
+    <title>Book {{ book.id }}</title>
+{% endblock %}
+
+{% block main %}
+
+    <div style="height:200px;
+            background-image: url({% static 'img/books-bg.jpg' %});
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;">
+
+    </div>
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col-8">
+                <h1 class="title">Información de libro {{ book.id }}</h1>
+                <img style="max-width: 100px;" src="{% static 'img/book.png' %}" alt="book">
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>ID:</strong> {{ book.id }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>ISBN:</strong> {{ book.isbn }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Title:</strong> {{ book.title }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Year:</strong> {{ book.year }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Author:</strong>
+                        {% if book.author_id %}
+                            <a href="{% url 'author_view' book.author_id %}">{{ book.author.first_name }} {{ book.author.last_name }}</a>
+                        {% else %}
+                            <span class="badge bg-secondary ms-3">--</span>
+                        {% endif %}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Published:</strong>
+                        {% if book.published %}
+                            <span class="badge bg-success">Sí</span>
+                        {% else %}
+                            <span class="badge bg-danger">No</span>
+                        {% endif %}
+                    </li>
+
+                </ul>
+
+                {% if genres|length %}
+                    <h3 class="mt-3 subtitle">Géneros</h3>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            {% for genre in genres %}
+                                <span class="badge {{ genre.color }}">{{ genre.name }}</span>
+                            {% endfor %}
+                        </li>
+                    </ul>
+                {% endif %}
+
+
+                <div class="mt-5">
+                    <a class="btn btn-success" href="{% url 'book_load' book.pk %}">Editar</a>
+                    <a class="btn btn-danger" href="{% url 'book_delete' book.pk %}">Borrar</a>
+                    <a class="btn btn-info" href="{% url 'book_list' %}">Volver al listado</a>
+                </div>
+
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

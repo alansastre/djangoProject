@@ -1,0 +1,19 @@
+.amarillo{
+    background-color: yellow;
+    color: black !important;
+}
+.negro{
+    background-color: black;
+}
+.rojo{
+    background-color: red;
+}
+.verde{
+    background-color: green;
+}
+.title{
+    color: darkgoldenrod;
+}
+.subtitle{
+    color: darkolivegreen;
+}

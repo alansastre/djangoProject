@@ -1,0 +1,113 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}
+    <title>Author {{ author.id }}</title>
+{% endblock %}
+
+{% block main %}
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col-8">
+
+                {% if author.id %}
+                    <h1>Editar autor {{ author.id }}</h1>
+                {% else %}
+                    <h1>Crear nuevo autor</h1>
+                {% endif %}
+
+                <form class="mb-5" action="{% url 'author_save' %}" method="post">
+                    {% csrf_token %}
+
+
+                    <input type="hidden" class="form-control" name="id" id="id" value="{{ author.id }}">
+
+
+                    <div class="mb-3">
+                        <label for="first_name" class="form-label">First name</label>
+                        <input type="text" class="form-control" name="first_name" id="first_name"
+                               value="{{ author.first_name }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="last_name" class="form-label">Last name</label>
+                        <input type="text" class="form-control" name="last_name" id="last_name"
+                               value="{{ author.last_name }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" name="email" id="email" value="{{ author.email }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="num_books" class="form-label">Number of books</label>
+                        <input type="number" class="form-control" name="num_books" id="num_books"
+                               value="{{ author.num_books }}">
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="married"
+                               name="married" {% if author.married %} checked {% endif %}>
+
+                        <label class="form-check-label" for="married">
+                            Married
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="salary" class="form-label">Salary</label>
+                        <input type="number" step="0.01" placeholder="0.00" class="form-control" name="salary"
+                               id="salary" value="{{ author.salary }}">
+                    </div>
+
+                    <h3>Biografía del autor</h3>
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Year</label>
+                        <input type="number" step="1" placeholder="1917" class="form-control" name="year" id="year"
+                               value="{{ author.biography.year }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Biography</label>
+                        <textarea class="form-control" id="description" name="description" rows="3">{{ author.biography.description }}</textarea>
+                    </div>
+
+                    <h3>Dirección del autor</h3>
+                    <div class="mb-3">
+                        <label for="direction_id">
+                            Dirección
+                            <select class="form-select" id="direction_id" name="direction_id">
+                                <option></option>
+
+                                {% if author.direction_id %}
+                                    <option value="{{ author.direction_id }}" selected>
+                                        {{ author.direction.street }}
+                                    </option>
+                                {% endif %}
+
+                                {% for direction in directions %}
+                                    <option value="{{ direction.id }}">
+                                        {{ direction.street }}
+                                    </option>
+                                {% endfor %}
+
+                            </select>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+
+                </form>
+                <a class="btn btn-info" href="{% url 'author_list' %}">Volver al listado</a>
+
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

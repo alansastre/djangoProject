@@ -1,0 +1,16 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}
+    <title>404 Not found</title>
+{% endblock %}
+
+{% block main %}
+
+    <div class="alert alert-danger p-5 m-5" role="alert">
+
+        <p>{{ error }}</p>
+        <a  href="{% url 'book_list' %}">Volver a inicio</a>
+    </div>
+
+
+{% endblock %}

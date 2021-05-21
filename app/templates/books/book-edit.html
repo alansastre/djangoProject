@@ -1,0 +1,94 @@
+{% extends "layout/layout.html" %}
+{% load static %}
+{% block title %}
+    <title>Book {{ book.id }}</title>
+    <link rel="stylesheet" href="{% static 'css/books.css' %}" type="text/css">
+{% endblock %}
+
+{% block main %}
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col-8">
+
+
+                <form class="mb-5" action="/books/save" method="post">
+                    {% csrf_token %}
+
+
+                    <input type="hidden" class="form-control" name="id" id="id" value="{{ book.id }}">
+
+
+                    <div class="mb-3">
+                        <label for="isbn" class="form-label">ISBN</label>
+                        <input type="text" class="form-control" name="isbn" id="isbn" value="{{ book.isbn }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" id="title" value="{{ book.title }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="year" class="form-label">Year</label>
+                        <input type="number" class="form-control" name="year" id="year" value="{{ book.year }}">
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="published"
+                               name="published" {% if book.published %} checked {% endif %}>
+
+                        <label class="form-check-label" for="published">
+                            Published
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="author_id">
+                            Author
+                            <select class="form-select" id="author_id" name="author_id">
+                                <option value="">----------</option>
+
+                                {% for author in authors %}
+                                    <option value="{{ author.id }}" {% if book.author_id == author.id %}
+                                            selected {% endif %}>
+                                        {{ author.first_name }} {{ author.last_name }}
+                                    </option>
+                                {% endfor %}
+
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="genres">
+                            Genres
+                            <select class="form-select" id="genres" name="genres" multiple>
+
+                                {% for genre in genres %}
+                                    <option value="{{ genre.id }}" {% if genre in book.genres.all %}selected {% endif %}>
+                                        {{ genre.name }} {{ genre.color }}
+                                    </option>
+                                {% endfor %}
+
+                            </select>
+                        </label>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+
+                </form>
+                <a class="btn btn-info" href="{% url 'book_list' %}">Volver al listado</a>
+
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

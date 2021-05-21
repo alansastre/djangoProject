@@ -1,0 +1,71 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}
+    <title>Author list</title>
+{% endblock %}
+
+{% block main %}
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+
+            <div class="col">
+
+                <h1 class="mt-1">Listado de autores</h1>
+
+                <a class="btn btn-primary" href="{% url 'author_new' %}">Crear nuevo autor</a>
+
+                <table class="mt-5 table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">First name</th>
+                        <th scope="col">Last name</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Number of books</th>
+                        <th scope="col">Creation date</th>
+                        <th scope="col">Married</th>
+                        <th scope="col">Salary</th>
+                        <th scope="col">Actions</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for author in authors %}
+
+                        <tr>
+                            <th scope="row">{{ author.id }}</th>
+                            <td>{{ author.first_name }}</td>
+                            <td>{{ author.last_name }}</td>
+                            <td>
+                                <a title="Enviar email" href="mailto:{{ author.email }}"> {{ author.email }}</a>
+                            </td>
+                            <td>{{ author.num_books }}</td>
+                            <td>{{ author.creation_date }}</td>
+                            <td>
+                                {% if author.married %}
+                                    <span class="badge bg-success">Sí</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ author.salary }}</td>
+                            <td>
+                                <a class="btn btn-primary" href="{% url 'author_view' author.id %}">Ver</a>
+                                <a class="btn btn-success" href="{% url 'author_load' author.id %}">Editar</a>
+                                <a class="btn btn-danger" href="{% url 'author_delete' author.id %}">Borrar</a>
+
+                            </td>
+                        </tr>
+
+
+                    {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
