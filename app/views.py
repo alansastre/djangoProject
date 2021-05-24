@@ -1,3 +1,6 @@
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect
 
@@ -12,19 +15,48 @@ def home_redirect(request):
 
 # *************************** SIGN IN / SIGN UP  *******************
 
-def sign_in(request):
-    pass
+def do_login(request):
+    if request.method == "GET":
+        return render(request, "accounts/login.html")
+
+    username = request.POST.get("username")
+    password = request.POST.get("password")
+    user = authenticate(request, username=username, password=password)
+    if user is None:
+        return render(request, "accounts/login.html")
+
+    login(request, user)
+    return redirect('book_list')
 
 
-def sign_up(request):
-    pass
+def do_logout(request):
+    logout(request)
+    return redirect('login')
 
 
-def logout(request):
-    pass
+def do_register(request):
+    if request.method == "GET":
+        return render(request, "accounts/register.html")
+
+    username = request.POST.get("username")
+    email = request.POST.get("email")
+    password = request.POST.get("password")
+
+    User.objects.create_user(username, email, password)
+
+    return redirect('login')
+
 
 # *************************** CRUD Books *******************
+@login_required
 def book_list(request):
+    # if request.user.is_authenticated:
+    #     # Do something for authenticated users.
+    #     print("USUARIO AUTENTICADO")
+    # else:
+    #     # Do something for anonymous users.
+    #     print("USUARIO NO AUTENTICADO")
+
     data = {
         "books": Book.objects.all(),  # recupera libros de db,
         "authors": Author.objects.all(),
@@ -32,7 +64,7 @@ def book_list(request):
     }
     return render(request, "books/book-list.html", context=data)
 
-
+@login_required
 def book_new(request):
     data = {
         "authors": Author.objects.all(),
@@ -40,7 +72,7 @@ def book_new(request):
     }
     return render(request, "books/book-edit.html", context=data)
 
-
+@login_required
 def book_load(request, id):
     data = {
         "book": Book.objects.get(id=id),  # recuperamos el libro, dentro tiene su propia lista de géneros
@@ -49,7 +81,7 @@ def book_load(request, id):
     }
     return render(request, "books/book-edit.html", context=data)
 
-
+@login_required
 def book_save(request):
     creation = not request.POST.get("id")
     genres = request.POST.getlist('genres')
@@ -81,7 +113,7 @@ def book_save(request):
         book.save()
     return HttpResponseRedirect("/books/{}/view".format(book.id))
 
-
+@login_required
 def book_filter(request):
     author_id_str = request.GET.get("author_id")
     genres = request.GET.getlist("genres")
@@ -117,7 +149,7 @@ def book_filter(request):
 
     return render(request, "books/book-list.html", context=data)
 
-
+@login_required
 def book_view(request, id):
     book = Book.objects.get(id=id)
     data = {
@@ -126,7 +158,7 @@ def book_view(request, id):
     }
     return render(request, "books/book-view.html", context=data)
 
-
+@login_required
 def book_delete(request, pk):
     try:
         book1 = Book.objects.get(pk=pk)
@@ -135,7 +167,7 @@ def book_delete(request, pk):
     except Book.DoesNotExist:
         return HttpResponseNotFound("Libro no encontrado")
 
-
+@login_required
 def book_delete_by_year(request, year):
     books = Book.objects.filter(year=year)
     result = books.delete()
@@ -143,14 +175,14 @@ def book_delete_by_year(request, year):
 
 
 # *************************** CRUD Authors *******************
-
+@login_required
 def author_list(request):
     data = {
         "authors": Author.objects.all()
     }
     return render(request, "authors/author-list.html", context=data)
 
-
+@login_required
 def author_view(request, id):
     data = {
         "author": Author.objects.get(id=id),
@@ -159,7 +191,7 @@ def author_view(request, id):
     }
     return render(request, "authors/author-view.html", context=data)
 
-
+@login_required
 def author_delete(request, pk):
     try:
         author = Author.objects.get(pk=pk)
@@ -171,14 +203,14 @@ def author_delete(request, pk):
         }
         return render(request, "layout/notfound-404.html", context=data)
 
-
+@login_required
 def author_new(request):
     data = {
         "directions": Direction.objects.exclude(author__isnull=False)
     }
     return render(request, "authors/author-edit.html", context=data)
 
-
+@login_required
 def author_load(request, id):
     data = {
         "author": Author.objects.get(id=id),
@@ -186,7 +218,7 @@ def author_load(request, id):
     }
     return render(request, "authors/author-edit.html", context=data)
 
-
+@login_required
 def author_save(request):
     creation = not request.POST.get("id")
 
@@ -242,7 +274,7 @@ def author_save(request):
 
 
 # ******************* CRUD Directions *************************
-
+@login_required
 def direction_delete(request, pk):
     try:
         direction = Direction.objects.get(pk=pk)
@@ -254,13 +286,13 @@ def direction_delete(request, pk):
         }
         return render(request, "layout/notfound-404.html", context=data)
 
-
+@login_required
 def direction_new(request):
     form = DirectionForm()
     form['street'].label_tag(attrs={'class': 'form-label'})
     return render(request, "directions/direction-edit.html", {'form': form})
 
-
+@login_required
 def direction_view(request, pk):
     direction = Direction.objects.get(pk=pk)
     data = {
@@ -268,7 +300,7 @@ def direction_view(request, pk):
     }
     return render(request, "directions/direction-view.html", context=data)
 
-
+@login_required
 def direction_save(request):
 
     form = DirectionForm(request.POST)
@@ -279,7 +311,7 @@ def direction_save(request):
     direction = form.save()
     return redirect('direction_view', pk=direction.id)
 
-
+@login_required
 def direction_load(request, pk):
     direction = Direction.objects.get(pk=pk)
 

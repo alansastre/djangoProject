@@ -133,3 +133,5 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Especifica la url de login a la que redirigir en caso de acceder a una vista no permita sin estar autenticado
+LOGIN_URL = '/accounts/login'
