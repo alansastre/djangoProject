@@ -1,0 +1,49 @@
+{% extends "layout/layout.html" %}
+
+{% block title %}
+    <title>Direction {{ direction.id }}</title>
+{% endblock %}
+
+{% block main %}
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+            <div class="col-2">
+
+            </div>
+            <div class="col-8">
+
+                <h1> Datos de la dirección </h1>
+
+                <ul class="list-group list-group-flush mb-3">
+                    <li class="list-group-item">
+                        <strong>ID:</strong> {{ direction.id }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Street:</strong> {{ direction.street }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Province:</strong> {{ direction.province }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Postal code:</strong>  {{ direction.postal_code }}
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Country:</strong> {{ direction.country }}
+                    </li>
+
+                </ul>
+
+
+                <hr>
+                <a class="btn btn-success" href="{% url 'direction_load' direction.pk %}">Editar</a>
+                <a class="btn btn-danger" href="{% url 'direction_delete' direction.pk %}">Borrar</a>
+                <a class="btn btn-info" href="{% url 'author_list' %}">Volver al listado</a>
+            </div>
+            <div class="col-2">
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

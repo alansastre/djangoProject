@@ -19,6 +19,7 @@
                     <h1>Crear nuevo autor</h1>
                 {% endif %}
 
+
                 <form class="mb-5" action="{% url 'author_save' %}" method="post">
                     {% csrf_token %}
 
@@ -73,10 +74,14 @@
 
                     <div class="mb-3">
                         <label for="description" class="form-label">Biography</label>
-                        <textarea class="form-control" id="description" name="description" rows="3">{{ author.biography.description }}</textarea>
+                        <textarea class="form-control" id="description" name="description"
+                                  rows="3">{{ author.biography.description }}</textarea>
                     </div>
 
-                    <h3>Dirección del autor</h3>
+                    <h3>Dirección del autor
+                        <a class="btn btn-info mt-3 mb-3" href="{% url 'direction_new' %}">Crear nueva dirección</a>
+                    </h3>
+
                     <div class="mb-3">
                         <label for="direction_id">
                             Dirección
@@ -96,6 +101,7 @@
                                 {% endfor %}
 
                             </select>
+
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Enviar</button>

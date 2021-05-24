@@ -27,5 +27,9 @@ urlpatterns = [
     path('authors/save', views.author_save, name="author_save"),
 
     # CRUD directions
-    path('directions/<int:pk>/delete', views.direction_delete, name="direction_delete")
+    path('directions/<int:pk>/delete', views.direction_delete, name="direction_delete"),
+    path('directions/new', views.direction_new, name="direction_new"),
+    path('directions/save', views.direction_save, name="direction_save"),
+    path('directions/<int:pk>/view', views.direction_view, name="direction_view"),
+    path('directions/<int:pk>/load', views.direction_load, name="direction_load"),
 ]

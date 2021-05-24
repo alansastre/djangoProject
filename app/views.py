@@ -1,5 +1,7 @@
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+
+from .forms import DirectionForm
 from .models import Book, Author, Direction, Genre, Biography
 from django.utils import timezone
 
@@ -251,3 +253,48 @@ def direction_delete(request, pk):
             "error": "Direccion no encontrada"
         }
         return render(request, "layout/notfound-404.html", context=data)
+
+
+def direction_new(request):
+    form = DirectionForm()
+    form['street'].label_tag(attrs={'class': 'form-label'})
+    return render(request, "directions/direction-edit.html", {'form': form})
+
+
+def direction_view(request, pk):
+    direction = Direction.objects.get(pk=pk)
+    data = {
+        "direction": direction,
+    }
+    return render(request, "directions/direction-view.html", context=data)
+
+
+def direction_save(request):
+
+    form = DirectionForm(request.POST)
+    if not form.is_valid():
+        return HttpResponseRedirect('/directions/new')
+
+    # El formulario es válido
+    direction = form.save()
+    return redirect('direction_view', pk=direction.id)
+
+
+def direction_load(request, pk):
+    direction = Direction.objects.get(pk=pk)
+
+    if request.method == "GET":
+        form = DirectionForm(instance=direction)
+        return render(request, "directions/direction-edit.html", {"form": form})
+    else:  # POST
+        form = DirectionForm(request.POST, instance=direction)
+        if form.is_valid():
+            form.save()
+
+    return redirect('direction_view', pk=direction.id)
+
+
+
+
+
+
