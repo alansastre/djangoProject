@@ -29,6 +29,9 @@
                     <a class="nav-link" href="{% url 'author_list' %}">Authors</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'direction_list' %}">Directions</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/admin">Panel admin</a>
                 </li>
                 {% if not user.is_authenticated %}

@@ -1,0 +1,71 @@
+{% extends "layout/layout.html" %}
+
+
+{% block title %}
+    <title>Direction list</title>
+{% endblock %}
+
+
+{% block main %}
+
+    <div class="container mt-5 mb-5">
+        <div class="row">
+
+            <div class="col">
+
+                <h1 class="mt-1 title">Listado de direcciones
+                    <a class="btn btn-primary" href="{% url 'direction_new' %}">Crear nueva dirección</a>
+                </h1>
+
+                <table class="mt-2 table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Id</th>
+                        <th scope="col">Street</th>
+                        <th scope="col">Province</th>
+                        <th scope="col">Postal Code</th>
+                        <th scope="col">Country</th>
+                        <th scope="col">Actions</th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for direction in direction_list %}
+
+                        <tr>
+                            <th scope="row">{{ direction.id }}</th>
+                            <td>{{ direction.street }}</td>
+                            <td>{{ direction.province }}</td>
+                            <td>{{ direction.postal_code }}</td>
+                            <td>{{ direction.country }}</td>
+                            <td>
+                                <a class="btn btn-primary" href="{% url 'direction_view' direction.id %}">Ver</a>
+                                <a class="btn btn-success" href="{% url 'direction_load' direction.id %}">Editar</a>
+                                <a class="btn btn-danger" href="{% url 'direction_delete' direction.pk %}">Borrar</a>
+
+                            </td>
+                        </tr>
+
+
+                    {% endfor %}
+
+
+                    </tbody>
+
+                </table>
+
+                {% if not direction_list|length %}
+                    <div class="text-center text-danger">
+                        No hay elementos actualmente.
+                    </div>
+                {% else %}
+                    <div class="text-center text-success">
+                        Hay un total de <strong>{{ direction_list|length }}</strong> elementos.
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

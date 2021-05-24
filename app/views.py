@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.views import generic
 
 from .forms import DirectionForm
 from .models import Book, Author, Direction, Genre, Biography
@@ -324,6 +325,15 @@ def direction_load(request, pk):
             form.save()
 
     return redirect('direction_view', pk=direction.id)
+
+
+# **************** Vistas basadas en clase ****************
+
+class DirectionListView(generic.ListView):
+    model = Direction
+    template_name = 'directions/direction-list.html'
+
+
 
 
 
