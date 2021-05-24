@@ -80,25 +80,40 @@ def book_save(request):
     return HttpResponseRedirect("/books/{}/view".format(book.id))
 
 
-def book_author_filter(request):
+def book_filter(request):
     author_id_str = request.GET.get("author_id")
     genres = request.GET.getlist("genres")
     author_id = int(author_id_str) if author_id_str else None
-    if author_id:
-        data = {
-            "books": Book.objects.filter(author_id=author_id, genres__id__in=genres),
-            "authors": Author.objects.all(),
-            "author_id": author_id
-        }
-        return render(request, "books/book-list.html", context=data)
-    return HttpResponseRedirect("/books")
 
+    books = None
+    if author_id and len(genres) >= 1:
+        books = Book.objects.filter(author_id=author_id, genres__id__in=genres).distinct()
+    elif author_id:
+        books = Book.objects.filter(author_id=author_id)
+    elif len(genres) >= 1:
+        books = Book.objects.filter(genres__id__in=genres).distinct()
+    else:
+        books = Book.objects.all()
 
-def book_filter(request, isbn):
-    print(isbn)
-    result = Book.objects.filter(isbn=isbn)
-    print(result)
-    return HttpResponse(result)
+    # FIX - no filtra bien:
+    # filter_args = {}
+    # if author_id:
+    #     filter_args['author_id'] = author_id
+    # if len(genres) > 1:
+    #     filter_args['genres__id__in'] = genres
+    #
+    # books = Book.objects.filter(**filter_args).distinct()
+
+    data = {
+        "books": books,
+        "authors": Author.objects.all(),
+        "genres": Genre.objects.all(),
+        # Seleccionados en el filtro
+        "author_id": author_id,
+        "genres_filtered": Genre.objects.filter(id__in=genres)
+    }
+
+    return render(request, "books/book-list.html", context=data)
 
 
 def book_view(request, id):

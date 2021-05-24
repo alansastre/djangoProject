@@ -10,10 +10,9 @@ urlpatterns = [
     path('books/new', views.book_new, name="book_new"),
     path('books/<int:id>/load', views.book_load, name="book_load"),
 
-    path('books/author/', views.book_author_filter, name="book_author_filter"),
+    path('books/filter/', views.book_filter, name="book_filter"),
 
     path('books/save', views.book_save, name="book_save"),
-    path('books/<str:isbn>/filter', views.book_filter),
     path('books/<int:id>/view', views.book_view, name="book_view"),
     path('books/<int:pk>/delete', views.book_delete, name='book_delete'),
     path('books/<int:year>/delete/all', views.book_delete_by_year),

@@ -19,7 +19,7 @@
                 </h1>
 
                 <div>
-                    <form id="filters" action="{% url 'book_author_filter' %}" method="get">
+                    <form id="filters" action="{% url 'book_filter' %}" method="get">
                         <div class="mb-3">
                             <label for="author_id">
                                 Filtrar por autor:
@@ -40,7 +40,7 @@
                                 <select class="form-select ms-3" id="genres" name="genres" multiple>
 
                                     {% for genre in genres %}
-                                        <option value="{{ genre.id }}">
+                                        <option value="{{ genre.id }}" {% if genre in genres_filtered %}selected{% endif %}>
                                             {{ genre.name }} {{ genre.color }}
                                         </option>
                                     {% endfor %}
@@ -66,6 +66,7 @@
                         <th scope="col">Title</th>
                         <th scope="col">Year</th>
                         <th scope="col">Author</th>
+                        <th scope="col">Genres</th>
                         <th scope="col">Actions</th>
 
                     </tr>
@@ -86,6 +87,10 @@
                                 {% else %}
                                     <span class="badge bg-secondary ms-3">--</span>
                                 {% endif %}
+                            </td>
+                            <td>{% for genre in book.genres.all %}
+                                 <span class="badge {{ genre.color }}">{{ genre.name }}</span>
+                                {% endfor %}
                             </td>
                             <td>
                                 <a class="btn btn-primary" href="{% url 'book_view' book.id %}">Ver</a>
